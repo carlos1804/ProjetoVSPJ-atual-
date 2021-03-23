@@ -7,14 +7,8 @@ id: {
   autoIncrement: true,
   primaryKey: true
 }, 
-email: {
-  type: DataTypes.STRING,
-  autoIncrement: false
-},
-senha: {
-  type: DataTypes.STRING,
-  autoIncrement: false
-},
+email: DataTypes.STRING,
+senha: DataTypes.STRING,
 telefone: DataTypes.STRING
 });
 module.exports = Administrador;

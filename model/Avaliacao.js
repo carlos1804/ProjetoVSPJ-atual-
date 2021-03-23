@@ -34,5 +34,4 @@ Usuario.hasMany(Avaliacao,{as: "Avaliacao"});
 
 Avaliacao.belongsTo(Administrador);
 Administrador.hasMany(Avaliacao,{as: "Avaliacao"}); 
-
-module.exports = Administrador;
+module.exports = Avaliacao;

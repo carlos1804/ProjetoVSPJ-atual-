@@ -7,14 +7,8 @@ id: {
   autoIncrement: true,
   primaryKey: true
 }, 
-emailusu: {
-  type: DataTypes.STRING,
-  autoIncrement: false
-},
-senhausu: {
-  type: DataTypes.STRING,
-  autoIncrement: false
-},
+emailusu: DataTypes.STRING,
+senhausu: DataTypes.STRING,
 telefoneusu: DataTypes.STRING
 });
 module.exports = Usuarios;

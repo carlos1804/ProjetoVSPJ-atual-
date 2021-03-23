@@ -9,21 +9,10 @@ id: {
   autoIncrement: true,
   primaryKey: true
 }, 
-titulo: {
-  type: DataTypes.STRING,
-  autoIncrement: false
-  
-}, 
-isbn: {
-  type: DataTypes.STRING,
-  autoIncrement: false
-  
-}, 
-arquivo: {
-  type: DataTypes.STRING,
-  autoIncrement: false
-  
-}, 
+
+isbn: DataTypes.STRING,
+arquivo: DataTypes.STRING,
+titulo: DataTypes.STRING,
 
 Usuario_Id:{
   type: DataTypes.INTEGER,

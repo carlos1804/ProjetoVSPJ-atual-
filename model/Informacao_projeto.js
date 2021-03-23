@@ -9,9 +9,7 @@ id: {
   autoIncrement: true,
   primaryKey: true
 }, 
-texto: {
-  type: DataTypes.INTEGER,
-},
+texto: DataTypes.STRING,
 
 Usuario_Id:{
   type: DataTypes.INTEGER,

@@ -1,6 +1,9 @@
-const Sequelize = require("sequelize");
+require('dotenv').config()
+const Route = require('./routes/RouteGeneric')
+const Service = require('./service/ServiceGeneric')
+const express = require("express"); 
+const cors = require('cors');
 const db = require("./db");
-
 const HQ = require("./model/HQ");
 const Animacao = require("./model/Animacao");
 const Informacao_projeto = require("./model/Informacao_projeto");
@@ -11,80 +14,104 @@ const Resenhas = require("./model/Resenhas");
 const Avaliacao = require("./model/Avaliacao");
 const Quizzes = require("./model/Quizzes");
 
-async function sincronizar(){
- await db.sync({force:true});
-}
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-async function inserirAvaliação(){
-await Avaliacao.create({texto_avaliacao: "Bom"});
-}
-inserirAvaliação();
-async function consultarAvaliação(){
-  const ava = await Avaliacao.findAll();
-  console.log(ava);
-}
+app.get("/", (req, res) => {
+    res.json({ message: 'A Aplicação está ativa!!' })
+});
 
-async function inserirQuizz(){
-await Quizzes.create({DUVIDA});
-}
-async function consultarQuizzes(){
-  const quiz = await Quizzes.findAll();
-  console.log(quiz);
-}
+app.get("/hq", async (req, res) => {
+  let livros = await HQ.findAll(); 
+  res.json(livros);
+});
+app.get("/hq/:id", async (req, res) => {
+  let hq = await HQ.findByPk(req.params.id); 
+  res.json(hq);
+});
 
-async function inseriresenha(){
-await Resenhas.create({textoresenha: "Resenha da HQ Tim tin na Africa: ...."});
-}
-async function consultarresenhas(){
-  const r = await Resenhas.findAll();
-  console.log(r);
-}
+app.get("/animacao", async (req, res) => {
+  let ani = await Animacao.findAll(); 
+  res.json(ani);
+});
+app.get("/animacao/:id", async (req, res) => {
+  let anim = await Animacao.findByPk(req.params.id); 
+  res.json(anim);
+});
 
-async function inseriraperguntas(){
-await Perguntas.create({enunciado:"quem sofreu racismo na história ?", alternativa1: "Hellen", alternativa2: "Ana", alternativa3: "Pedro", resposta: "alternativa_1"});
-}
-async function consultarperguntas(){
-  const p = await Perguntas.findAll();
-  console.log(p);
-}
+app.get("/usuario", async (req, res) => {
+  let usu = await Usuarios.findAll(); 
+  res.json(usu);
+});
+app.get("/usuario/:id", async (req, res) => {
+  let usu = await Usuarios.findByPk(req.params.id); 
+  res.json(usu);
+});
 
-async function inseriradm(){
-await Administrador.create({email:"admo@gmail.com", senha: "mhasenha", telefone: "99990999"});
-}
-async function consultaradm(){
-  const u = await Administrador.findAll();
-  console.log(u);
-}
+app.get("/informacoes", async (req, res) => {
+  let i = await Informacao_projeto.findAll(); 
+  res.json(i);
+});
+app.get("/informacoes/:id", async (req, res) => {
+  let i = await Informacao_projeto.findByPk(req.params.id); 
+  res.json(i);
+});
 
-async function inserirusu(){
-await Usuarios.create({emailusu:"aab@gmail.com", senhausu: "mminhasenha", telefoneusu: "99999"});
-}
-async function consultarusu(){
-  const uu = await Usuarios.findAll();
-  console.log(uu);
-}
+app.get("/administrador", async (req, res) => {
+  let adm = await Administrador.findAll(); 
+  res.json(adm);
+});
+app.get("/administrador/:id", async (req, res) => {
+  let adm = await Administrador.findByPk(req.params.id); 
+  res.json(adm);
+});
 
-async function inseririnformacaoprojeto(){
-await Informacao_projeto.create({texto:"informaçõesssss"});
-}
-async function consultarinformacao_projeto(){
-  const res = await Informacao_projeto.findAll();
-  console.log(res);
-}
+app.get("/perguntas", async (req, res) => {
+  let p = await Perguntas.findAll(); 
+  res.json(p);
+});
+app.get("/perguntas/:id", async (req, res) => {
+  let p = await Perguntas.findByPk(req.params.id); 
+  res.json(p);
+});
 
-async function inseriranimacao(){
-await Animacao.create({titulo_animacao:"Dandara", arquivo_animacao: "em andamento"});
-}
-async function consultaranimacao(){
-  const ani = await Animacao.findAll();
-  console.log(ani);
-}
+app.get("/resenhas", async (req, res) => {
+  let r = await Resenhas.findAll(); 
+  res.json(r);
+});
+app.get("/resenhas/:id", async (req, res) => {
+  let r = await Resenhas.findByPk(req.params.id); 
+  res.json(r);
+});
 
-async function inserirHQ(){
- await HQ.create({titulo:"Tornar-se negra", isbn: 123333, arquivo: "http://editora.ifpb.edu.br/index.php/ifpb/catalog/book/240"});
-}
-async function consultarHQ(){
-  const hq = await HQ.findAll();
-  console.log(hq);
-}
+app.get("/avaliacao", async (req, res) => {
+  let av = await Avaliacao.findAll(); 
+  res.json(av);
+});
+app.get("/avaliacao/:id", async (req, res) => {
+  let av = await Avaliacao.findByPk(req.params.id); 
+  res.json(av);
+});
 
+app.get("/quizzes", async (req, res) => {
+  let q = await Quizzes.findAll(); 
+  res.json(q);
+});
+app.get("/quizzes/:id", async (req, res) => {
+  let q = await Quizzes.findByPk(req.params.id); 
+  res.json(q);
+});
+
+Route("/usuario",app, new Service(Usuarios));
+Route("/hq",app, new Service(HQ));
+Route("/animacao",app, new Service(Animacao));
+Route("/informacoes",app, new Service(Informacao_projeto));
+Route("/administrador",app, new Service(Administrador));
+Route("/perguntas",app, new Service(Perguntas));
+Route("/resenhas",app, new Service(Resenhas));
+Route("/avaliacao",app, new Service(Avaliacao));
+Route("/quizzes",app, new Service(Quizzes));
+
+app.listen(3000, () => console.log("Servidor ativo."))

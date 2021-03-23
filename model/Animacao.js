@@ -9,14 +9,8 @@ id: {
   autoIncrement: true,
   primaryKey: true
 }, 
-titulo_animacao: {
-  type: DataTypes.STRING,
-  autoIncrement: false
-},
-arquivo_animacao: {
-  type: DataTypes.STRING,
-  autoIncrement: false
-}, 
+titulo_animacao: DataTypes.STRING,
+arquivo_animacao: DataTypes.STRING,
 Usuario_Id:{
   type: DataTypes.INTEGER,
   references:{
