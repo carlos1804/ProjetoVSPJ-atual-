@@ -9,6 +9,7 @@ id: {
 }, 
 emailusu: DataTypes.STRING,
 senhausu: DataTypes.STRING,
-telefoneusu: DataTypes.STRING
+telefoneusu: DataTypes.STRING,
+admin:DataTypes.BOOLEAN
 });
 module.exports = Usuarios;

@@ -8,11 +8,18 @@ const HQ = require("./model/HQ");
 const Animacao = require("./model/Animacao");
 const Informacao_projeto = require("./model/Informacao_projeto");
 const Usuarios = require("./model/Usuarios");
-const Administrador = require("./model/Administrador");
 const Perguntas = require("./model/Perguntas");
 const Resenhas = require("./model/Resenhas");
 const Avaliacao = require("./model/Avaliacao");
 const Quizzes = require("./model/Quizzes");
+const bcryptjs = require("bcryptjs");
+const jsonwebtoken = require("jsonwebtoken");
+const authorization = require("./Authorization")
+
+async function sync() {
+  await Usuarios.sync({force:true});
+}
+sync();
 
 const app = express();
 app.use(cors());
@@ -23,6 +30,7 @@ app.get("/", (req, res) => {
     res.json({ message: 'A Aplicação está ativa!!' })
 });
 
+/*
 app.get("/hq", async (req, res) => {
   let livros = await HQ.findAll(); 
   res.json(livros);
@@ -103,15 +111,43 @@ app.get("/quizzes/:id", async (req, res) => {
   let q = await Quizzes.findByPk(req.params.id); 
   res.json(q);
 });
+*/
+Route("/usuario",app, new Service(Usuarios), authorization);
+Route("/hq",app, new Service(HQ), authorization);
+Route("/animacao",app, new Service(Animacao), authorization);
+Route("/informacoes",app, new Service(Informacao_projeto), authorization);
+Route("/perguntas",app, new Service(Perguntas), authorization);
+Route("/resenhas",app, new Service(Resenhas), authorization);
+Route("/avaliacao",app, new Service(Avaliacao), authorization);
+Route("/quizzes",app, new Service(Quizzes), authorization);
 
-Route("/usuario",app, new Service(Usuarios));
-Route("/hq",app, new Service(HQ));
-Route("/animacao",app, new Service(Animacao));
-Route("/informacoes",app, new Service(Informacao_projeto));
-Route("/administrador",app, new Service(Administrador));
-Route("/perguntas",app, new Service(Perguntas));
-Route("/resenhas",app, new Service(Resenhas));
-Route("/avaliacao",app, new Service(Avaliacao));
-Route("/quizzes",app, new Service(Quizzes));
+async function gerarHash(senhausu) {
+  return await bcryptjs.hash(senhausu, 10)
+}
 
-app.listen(3000, () => console.log("Servidor ativo."))
+app.post("/cadastrar", async (req, res) => {
+  const {emailusu, senhausu} = req.body;
+  const u = await Usuarios.create({emailusu, admin:false, senhausu:(await gerarHash(senhausu))});
+  //u.senhausuefined;
+  res.send(u);
+})
+
+app.post("/autenticar", async (req, res) => {
+  const {emailusu, senhausu} = req.body;
+  //const usu = await Usuarios.findByPk(emailusu);
+  const usu = await Usuarios.findOne({where:{emailusu}})
+  if(!usu || !senhausu) {
+    res.status(400).send("Credenciais inválidas");
+  } else if(bcryptjs.compareSync(senhausu, usu.senhausu)){
+    const token = jsonwebtoken.sign(
+      {emailusu},
+      process.env.SECRET,
+      {expiresIn:3600}
+    );
+    res.send({emailusu, token})
+  } else {
+    res.status(400).send("Credenciais inválidas")
+  }
+})
+
+app.listen(process.env.PORT, () => console.log("Servidor ativo."))

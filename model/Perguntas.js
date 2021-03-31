@@ -1,7 +1,6 @@
 const {Sequelize, DataTypes} = require("sequelize");
 const db = require("../db");
 const Usuario = require("./Usuarios")
-const Administrador = require("./Administrador")
 const Quizzes = require("./Quizzes")
 const Perguntas = db.define("Perguntas", 
 {
@@ -45,13 +44,6 @@ Usuario_Id:{
   }
 },
 
-Administrador_Id:{
-  type: DataTypes.INTEGER,
-  references:{
-    model: Administrador,
-    key: 'id'
-  }
-},
 Quizzes_Id:{
   type: DataTypes.INTEGER,
   references:{
@@ -63,9 +55,6 @@ Quizzes_Id:{
 
 Perguntas.belongsTo(Usuario);
 Usuario.hasMany(Perguntas,{as: "Perguntas"});
-
-Perguntas.belongsTo(Administrador);
-Administrador.hasMany(Perguntas, {as: "Perguntas"});
 
 Perguntas.belongsTo(Quizzes);
 Quizzes.hasMany(Perguntas,{as: "Perguntas"});

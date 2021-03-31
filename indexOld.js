@@ -5,7 +5,6 @@ const HQ = require("./model/HQ");
 const Animacao = require("./model/Animacao");
 const Informacao_projeto = require("./model/Informacao_projeto");
 const Usuarios = require("./model/Usuarios");
-const Administrador = require("./model/Administrador");
 const Perguntas = require("./model/Perguntas");
 const Resenhas = require("./model/Resenhas");
 const Avaliacao = require("./model/Avaliacao");

@@ -1,4 +1,7 @@
-module.exports = (rota, app, service) => {
+
+module.exports = (rota, app, service, middleware) => {
+
+  app.use(rota, middleware);
 
   app.post(rota, service.create);
 
