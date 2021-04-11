@@ -10,10 +10,10 @@ const Resenhas = require("./model/Resenhas");
 const Avaliacao = require("./model/Avaliacao");
 const Quizzes = require("./model/Quizzes");
 
-async function sincronizar(){
+/*async function sincronizar(){
  await db.sync({force:true});
 }
-
+*/
 async function inserirAvaliação(){
 await Avaliacao.create({texto_avaliacao: "Bom"});
 }

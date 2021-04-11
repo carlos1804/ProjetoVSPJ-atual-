@@ -16,11 +16,6 @@ const bcryptjs = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
 const authorization = require("./Authorization")
 
-async function sync() {
-  await Usuarios.sync({force:true});
-}
-sync();
-
 const app = express();
 app.use(cors());
 app.use(express.json());
